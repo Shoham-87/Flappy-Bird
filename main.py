@@ -162,7 +162,7 @@ def getRandomPipe():
     Generate positions of two pipes(one bottom straight and one top rotated ) for blitting on the screen
     """
     pipeHeight = Game_images['pipe'][0].get_height()
-    offset = screen_height/3 + 50
+    offset = screen_height/3 
     y2 = offset + random.randrange(0, int(screen_height - Game_images['Base'].get_height()  - 1.2 *offset))
     pipeX = screen_width + 10
     y1 = pipeHeight - y2 + offset
