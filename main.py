@@ -21,7 +21,7 @@ pygame.display.update()
 
 def Welcome():
     """
-    To Produce the Welcome Screen
+    The Welcome Screen
     """
     basex=0
     while True:
@@ -41,31 +41,25 @@ def MainGame():
     playerx = int(screen_width/6)
     playery = int(screen_width/2)
     basex = 0
-
-    # Create 2 pipes for blitting on the screen
     newPipe1 = getRandomPipe()
     newPipe2 = getRandomPipe()
-
-    # my List of upper pipes
     upperPipes = [
         {'x': screen_width+200, 'y':newPipe1[0]['y']},
         {'x': screen_width+200+(screen_width/2), 'y':newPipe2[0]['y']},
     ]
-    # my List of lower pipes
     lowerPipes = [
         {'x': screen_width+200, 'y':newPipe1[1]['y']},
         {'x': screen_width+200+(screen_width/2), 'y':newPipe2[1]['y']},
     ]
 
     pipeVelX = -4
-
     playerVelY = -9
     playerMaxVelY = 10
     playerMinVelY = -8
     playerAccY = 1
 
-    playerFlapAccv = -8 # velocity while flapping
-    playerFlapped = False # It is true only when the bird is flapping
+    playerFlapAccv = -8 
+    playerFlapped = False 
 
 
     while True:
@@ -80,12 +74,12 @@ def MainGame():
                     Game_sounds['wing'].play()
 
 
-        crashTest = isCollide(playerx, playery, upperPipes, lowerPipes) # This function will return true if the player is crashed
+        crashTest = isCollide(playerx, playery, upperPipes, lowerPipes)
         if crashTest:
             Welcome()
             return     
 
-        #Score
+        #Score is displayed
         playerMidPos = playerx + Game_images['Player'].get_width()/2
         for pipe in upperPipes:
             pipeMidPos = pipe['x'] + Game_images['pipe'][0].get_width()/2
@@ -103,23 +97,16 @@ def MainGame():
         playerHeight = Game_images['Player'].get_height()
         playery = playery + min(playerVelY, ground - playery - playerHeight)
 
-        # Pipes towards  left
         for upperPipe , lowerPipe in zip(upperPipes, lowerPipes):
             upperPipe['x'] += pipeVelX
             lowerPipe['x'] += pipeVelX
-
-        # Add a new pipe when the first is about to cross the leftmost part of the screen
         if 0<upperPipes[0]['x']<5:
             newpipe = getRandomPipe()
             upperPipes.append(newpipe[0])
             lowerPipes.append(newpipe[1])
-
-        # if the pipe is out of the screen, remove it
         if upperPipes[0]['x'] < - Game_images['pipe'][0].get_width():
             upperPipes.pop(0)
             lowerPipes.pop(0)
-        
-        # Lets blit our sprites now
         screen.blit(Game_images['Background'], (0, 0))
         for upperPipe, lowerPipe in zip(upperPipes, lowerPipes):
             screen.blit(Game_images['pipe'][0], (upperPipe['x'], upperPipe['y']))
@@ -159,7 +146,7 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
 
 def getRandomPipe():
     """
-    Generate positions of two pipes(one bottom straight and one top rotated ) for blitting on the screen
+    Generate positions of two pipes(one bottom straight and one top rotated  for blitting on the screen
     """
     pipeHeight = Game_images['pipe'][0].get_height()
     offset = screen_height/3 
@@ -192,8 +179,6 @@ if __name__ == "__main__":
     Game_images['Background']=pygame.image.load(background).convert()   
     Game_images['pipe']=(pygame.transform.rotate(pygame.image.load(pipe), 180).convert_alpha(),
     pygame.image.load(pipe).convert_alpha())
-
-    #Loading the Sound Effect
 
     Game_sounds['die'] = pygame.mixer.Sound('Sounds/die.wav')
     Game_sounds['hit'] = pygame.mixer.Sound('Sounds/hit.wav')
